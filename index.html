@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment - Pilih Metode</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* Background glow */
+  body::before {
+    content: '';
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 200, 255, 0.25), transparent 70%);
+    top: -150px;
+    left: -150px;
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 0, 200, 0.2), transparent 70%);
+    bottom: -120px;
+    right: -120px;
+    border-radius: 50%;
+    animation: float 10s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(40px, 40px); }
+  }
+
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 32px 26px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    animation: fadeUp 0.8s ease;
+    z-index: 1;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .header .icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border-radius: 18px;
+    font-size: 28px;
+    box-shadow: 0 8px 20px rgba(0, 114, 255, 0.5);
+  }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .header p {
+    font-size: 13px;
+    color: #b8b8d0;
+    margin-top: 6px;
+  }
+
+  /* Opsi pembayaran */
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    border-color: rgba(0, 200, 255, 0.4);
+  }
+
+  .option .logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .dana .logo {
+    background: linear-gradient(135deg, #118eea, #0b6bcb);
+    box-shadow: 0 6px 14px rgba(17, 142, 234, 0.4);
+  }
+
+  .gopay .logo {
+    background: linear-gradient(135deg, #00aed6, #0084b6);
+    box-shadow: 0 6px 14px rgba(0, 174, 214, 0.4);
+  }
+
+  .option .info {
+    flex: 1;
+  }
+
+  .option .info .name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .option .info .number {
+    font-size: 13px;
+    color: #c4c4dd;
+    letter-spacing: 0.5px;
+  }
+
+  .option .info .owner {
+    font-size: 11px;
+    color: #8f8fb0;
+    margin-top: 2px;
+  }
+
+  .copy-btn {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border: none;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 114, 255, 0.5);
+  }
+
+  .copy-btn:active {
+    transform: scale(0.95);
+  }
+
+  .copy-btn.copied {
+    background: linear-gradient(135deg, #00d68f, #00b377);
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: #8a8aa8;
+    line-height: 1.6;
+  }
+
+  .footer .secure {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(0, 214, 143, 0.12);
+    border: 1px solid rgba(0, 214, 143, 0.3);
+    border-radius: 20px;
+    color: #00d68f;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  /* Toast notif */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, #00d68f, #00b377);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0, 214, 143, 0.4);
+    opacity: 0;
+    transition: all 0.4s ease;
+    z-index: 99;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 400px) {
+    .card { padding: 24px 18px; }
+    .option { padding: 13px; }
+    .option .info .number { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="header">
+      <div class="icon">💳</div>
+      <h1>Metode Pembayaran</h1>
+      <p>Silakan pilih dan transfer ke salah satu tujuan</p>
+    </div>
+
+    <!-- DANA -->
+    <div class="option dana">
+      <div class="logo">DANA</div>
+      <div class="info">
+        <div class="name">DANA</div>
+        <div class="number" id="danaNum">087721351375</div>
+        <div class="owner">A/N SUBARIYATI</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('087721351375', this)">Salin</button>
+    </div>
+
+    <!-- GOPAY -->
+    <div class="option gopay">
+      <div class="logo">GO</div>
+      <div class="info">
+        <div class="name">GoPay</div>
+        <div class="number" id="gopayNum">087745460192</div>
+        <div class="owner">A/N MANZZJB1</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('087745460192', this)">Salin</button>
+    </div>
+
+    <div class="footer">
+      <div class="secure">🔒 Transaksi Aman & Terpercaya</div>
+      <div>Pastikan nominal sesuai sebelum transfer.</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">✅ Nomor berhasil disalin!</div>
+
+<script>
+  function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Tersalin ✓';
+      btn.classList.add('copied');
+
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        btn.textContent = 'Salin';
+        btn.classList.remove('copied');
+        toast.classList.remove('show');
+      }, 1800);
+    }).catch(() => {
+      // Fallback kalau clipboard API gagal
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      btn.textContent = 'Tersalin ✓';
+      setTimeout(() => btn.textContent = 'Salin', 1800);
+    });
+  }
+</script>
+</body>
+</html>
